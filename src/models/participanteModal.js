@@ -1,6 +1,6 @@
 import conn from  "../config/conn.js"
 
-const tablePalestrante = /*sql*/`
+const tableParticipante = /*sql*/`
     CREATE TABLE IF NOT EXISTS  participante(
         participante_id varchar(255) not null,
         nome varchar(255) not null,
@@ -10,7 +10,7 @@ const tablePalestrante = /*sql*/`
     )
 `;
 
-conn.query(tablePalestrante, (err) =>{
+conn.query(tableParticipante, (err) =>{
     if(err){
         console.error (err)
         return

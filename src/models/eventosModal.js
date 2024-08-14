@@ -1,6 +1,6 @@
 import conn from  "../config/conn.js"
 
-const tablePalestrante = /*sql*/`
+const tableEventos = /*sql*/`
     CREATE TABLE IF NOT EXISTS  eventosTabela(
         evento_id varchar(60) primary key,
         titulo varchar(255) not null,
@@ -11,7 +11,7 @@ const tablePalestrante = /*sql*/`
         FOREIGN KEY (palestrante_id) REFERENCES palestrante(palestrante_id)
     )
 `;
-conn.query(tablePalestrante, (err) =>{
+conn.query(tableEventos, (err) =>{
     if(err){
         console.error (err)
         return

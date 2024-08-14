@@ -7,6 +7,7 @@ import conn from "./config/conn.js"
 //Importar os modulos(taelas)
 import "./models/palestranteModal.js"
 import "./models/eventosModal.js"
+import "./models/participanteModal.js"
 
 
 //importar as rotas
@@ -19,9 +20,9 @@ const app = express()
 
 app.use(express.json());
 //Utilizar rotas
-app.use("/eventos", palestranteRoutes)
+app.use("/eventosPalestrante", palestranteRoutes)
 app.use("/eventos", eventoRoutes)
-app.use("/eventos", participantesRoutes)
+app.use("/eventosParticipante", participantesRoutes)
 
 app.use((request, response) => {
     response.status(404).json({message: "Recurso não encontrado"})
