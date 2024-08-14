@@ -6,9 +6,13 @@ import conn from "./config/conn.js"
 
 //Importar os modulos(taelas)
 import "./models/palestranteModal.js"
+import "./models/eventosModal.js"
+
 
 //importar as rotas
 import palestranteRoutes from "./routes/palestranteRoutes.js"
+import eventoRoutes from "./routes/eventosRoutes.js"
+import participantesRoutes from "./routes/participantesRoutes.js"
 
 const PORT = process.env.PORT
 const app = express()
@@ -16,6 +20,8 @@ const app = express()
 app.use(express.json());
 //Utilizar rotas
 app.use("/eventos", palestranteRoutes)
+app.use("/eventos", eventoRoutes)
+app.use("/eventos", participantesRoutes)
 
 app.use((request, response) => {
     response.status(404).json({message: "Recurso não encontrado"})

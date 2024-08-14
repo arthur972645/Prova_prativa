@@ -70,7 +70,7 @@ export const register =(request, response) => {
 }
 
 //mostrar todos os palestrantes
-export const getAllParticipantes = async (request, response) => {
+export const getAllPalestrantes = async (request, response) => {
     const sql = /*sql*/` SELECT * FROM palestrante`
 
     conn.query(sql,(err,data) => {
