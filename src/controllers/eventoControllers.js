@@ -10,10 +10,7 @@ import getToken from "../helpers/getToken.js"
 import getUserByToken from "../helpers/get-user-by-token.js";
 
 export const criarEvento = async (request, response) => {
-    const {titulo, diaDoEvento} = request.body
-
-    const token = getToken(request);
-    const user = await getUserByToken(token);
+    const {titulo, diaDoEvento, palestrante_id} = request.body
   
     
     if(!titulo){
@@ -25,8 +22,11 @@ export const criarEvento = async (request, response) => {
         return
     }
 
+    if(!palestrante_id){
+        response.status(400).json({message: "O id do palestrante é obrigatorio"})
+        return
+    }
     const evento_id = uuidv4()
-    const palestrante_id = user.palestrante_id
 
 
     const checkSql = /*sql*/` SELECT * FROM eventosTabela WHERE ?? = ? AND ?? = ?`
@@ -71,3 +71,72 @@ export const getAllEventos = async (request, response) => {
         response.status(200).json(data)
     })
 }   
+
+export const editarEvento = async (request, response) => {
+    const { id } = request.params
+
+    try{
+        const { titulo, diaDoEvento } = request.body
+        if (!titulo) {
+            response.status(400).json({ message: "O titulo é obrigatório" });
+            return;
+          }
+          if (!diaDoEvento) {
+            response.status(400).json({ message: "O diaDoEvento é obrigatório" });
+            return;
+          }
+
+          const checkSql = /*sql*/ `SELECT * FROM eventosTabela WHERE ?? = ?`;
+          const checkData = ["evento_id", id];
+
+          conn.query(checkSql, checkData, (err, data) => {
+            if(err){
+                response.status(500).json({err: "Erro ao buscar evento"})
+                return
+            }
+            if(data.length === 0 ){
+                response.status(404).json({err: "Evento não encontrado"})
+                return
+            }
+
+            const updateSql = /*sql*/ `UPDATE eventosTabela SET ? WHERE ?? = ?`;
+            const updateData = [
+                {titulo, diaDoEvento},
+                "evento_id",
+                id
+            ]
+            conn.query(updateSql, updateData,(err) => {
+                if(err){
+                    console.error(err)
+                    response.status(500).json({err: "Erro ao atualizar evento"})
+                    return
+                }
+                response.status(200).json({message: "Evento atualizado"})
+            })
+          })
+    } catch(error){
+        console.error(error)
+        response.status(error.status || 500).json({message: error.message || "Erro interno no servidor"});
+      }
+}
+
+export const deletarEvento = (request, response) => {
+    const { id } = request.params
+    
+    const deleteSql = /*sql*/` delete from eventosTabela where ?? = ?`
+    const insertData = ["evento_id", id]
+
+    conn.query(deleteSql, insertData, (err, data) => {
+        if(err){
+            console.error(err);
+            response.status(500).json({ message: "Erro ao deletar Evento" });
+            return
+        }
+        if(data.length === 0) {
+            response.status(404).json({ messagae: "Evento não encontrado" });
+            return;
+          }
+
+          response.status(200).json({messagae: "Evento selecionado foi deletado"})
+    })
+}

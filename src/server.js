@@ -8,7 +8,7 @@ import conn from "./config/conn.js"
 import "./models/palestranteModal.js"
 import "./models/eventosModal.js"
 import "./models/participanteModal.js"
-
+import "./models/feedbackModal.js"
 
 //importar as rotas
 import palestranteRoutes from "./routes/palestranteRoutes.js"
